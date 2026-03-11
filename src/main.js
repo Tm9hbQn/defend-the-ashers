@@ -417,6 +417,7 @@ function changeState(newState) {
     gameState = newState;
     stateTimer = 0;
     overlay.innerHTML = '';
+    overlay.style.cssText = ''; // Clear all inline styles
 
     if (newState === 'menu') setupMenu();
     else if (newState === 'playing') setupLevel();
