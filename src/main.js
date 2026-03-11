@@ -602,19 +602,22 @@ function setupMenu() {
     baseRenderer.maxHp = stats.maxHp;
     villain.setExpression('smug');
 
-    // Refresh leaderboard in background
-    leaderboardLoading = true;
-    fetchLeaderboard().then(rows => {
-        leaderboard = rows;
-        leaderboardLoading = false;
-        renderMenu(); // re-render with fresh data
-    });
-
-    // If no name yet, prompt first
+    // If no name yet, prompt first (do this BEFORE async fetch to avoid overlay conflicts)
     if (!playerName) {
         showNamePrompt(() => setupMenu());
         return;
     }
+
+    // Refresh leaderboard in background (only if player has a name)
+    leaderboardLoading = true;
+    fetchLeaderboard().then(rows => {
+        leaderboard = rows;
+        leaderboardLoading = false;
+        // Only re-render if still on menu (avoid overwriting other states)
+        if (gameState === 'menu') {
+            renderMenu();
+        }
+    });
 
     renderMenu();
 }
