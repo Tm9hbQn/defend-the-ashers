@@ -1096,11 +1096,19 @@ function setupGameOver() {
             <div style="${F}font-size:16px;color:#b2bec3;margin-bottom:8px;">Reached Level ${stats.level}</div>
             <div style="${F}font-size:22px;color:#ffeaa7;font-weight:700;margin-bottom:6px;">Score: ${stats.score.toLocaleString()}</div>
             <div id="scoreStatusMsg" style="${F}font-size:13px;color:#636e72;margin-bottom:24px;min-height:20px;">${playerName ? 'Submitting score...' : ''}</div>
-            <div id="retryBtn" style="${F}font-size:18px;font-weight:700;color:#1a1a2e;background:#d63031;padding:12px 45px;border-radius:12px;cursor:pointer;letter-spacing:2px;text-transform:uppercase;">TRY AGAIN</div>
+            <div style="display:flex;gap:12px;align-items:center;">
+                <div id="retryBtn" style="${F}font-size:18px;font-weight:700;color:#1a1a2e;background:#d63031;padding:12px 45px;border-radius:12px;cursor:pointer;letter-spacing:2px;text-transform:uppercase;">TRY AGAIN</div>
+                <div id="menuBtn" style="${F}font-size:18px;font-weight:700;color:#1a1a2e;background:#b2bec3;padding:12px 45px;border-radius:12px;cursor:pointer;letter-spacing:2px;text-transform:uppercase;">MAIN SCREEN</div>
+            </div>
         </div>
     `;
 
     document.getElementById('retryBtn').addEventListener('click', () => {
+        audio.playSelect();
+        changeState('playing');
+    });
+
+    document.getElementById('menuBtn').addEventListener('click', () => {
         audio.playSelect();
         changeState('menu');
     });
@@ -1141,11 +1149,19 @@ function setupVictory() {
             <div style="${F}font-size:14px;color:#b2bec3;font-style:italic;margin-bottom:15px;">"This... this is impossible!" - The Commander</div>
             <div style="${F}font-size:26px;color:#ffeaa7;font-weight:700;margin-bottom:6px;">Final Score: ${stats.score.toLocaleString()}</div>
             <div id="scoreStatusMsg" style="${F}font-size:13px;color:#636e72;margin-bottom:24px;min-height:20px;">${playerName ? 'Submitting score...' : ''}</div>
-            <div id="menuBtn" style="${F}font-size:18px;font-weight:700;color:#1a1a2e;background:#00b894;padding:12px 45px;border-radius:12px;cursor:pointer;letter-spacing:2px;text-transform:uppercase;">PLAY AGAIN</div>
+            <div style="display:flex;gap:12px;align-items:center;">
+                <div id="playAgainBtn" style="${F}font-size:18px;font-weight:700;color:#1a1a2e;background:#00b894;padding:12px 45px;border-radius:12px;cursor:pointer;letter-spacing:2px;text-transform:uppercase;">PLAY AGAIN</div>
+                <div id="mainMenuBtn" style="${F}font-size:18px;font-weight:700;color:#1a1a2e;background:#b2bec3;padding:12px 45px;border-radius:12px;cursor:pointer;letter-spacing:2px;text-transform:uppercase;">MAIN SCREEN</div>
+            </div>
         </div>
     `;
 
-    document.getElementById('menuBtn').addEventListener('click', () => {
+    document.getElementById('playAgainBtn').addEventListener('click', () => {
+        audio.playSelect();
+        changeState('playing');
+    });
+
+    document.getElementById('mainMenuBtn').addEventListener('click', () => {
         audio.playSelect();
         changeState('menu');
     });
