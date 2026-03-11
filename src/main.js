@@ -427,36 +427,60 @@ function changeState(newState) {
 
 // ─── NAME PROMPT ─────────────────────────────
 function showNamePrompt(onDone) {
+    overlay.style.display = 'flex';
+    overlay.style.position = 'fixed';
+    overlay.style.top = '0';
+    overlay.style.left = '0';
+    overlay.style.width = '100%';
+    overlay.style.height = '100%';
+    overlay.style.zIndex = '9999';
+    overlay.style.flexDirection = 'column';
+    overlay.style.alignItems = 'center';
+    overlay.style.justifyContent = 'center';
+    overlay.style.background = 'rgba(10,10,26,0.98)';
+
     overlay.innerHTML = `
-        <div style="position:fixed;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(10,10,26,0.97);z-index:30;animation:fadeIn 0.3s ease;">
+        <div style="text-align:center;">
             <div style="font-family:'Segoe UI',Arial,sans-serif;font-size:28px;font-weight:900;color:#ffeaa7;margin-bottom:8px;letter-spacing:2px;">COMMANDER</div>
             <div style="font-family:'Segoe UI',Arial,sans-serif;font-size:14px;color:#b2bec3;margin-bottom:30px;">What's your name, soldier?</div>
             <input id="nameInput" maxlength="20" placeholder="Enter name..."
                 style="font-family:'Segoe UI',Arial,sans-serif;font-size:20px;font-weight:700;color:#ffeaa7;background:rgba(255,234,167,0.08);border:2px solid rgba(255,234,167,0.3);border-radius:10px;padding:12px 20px;width:220px;text-align:center;outline:none;caret-color:#ffeaa7;margin-bottom:20px;"
-                autocomplete="off" autocorrect="off" spellcheck="false">
+                autocomplete="off" autocorrect="off" spellcheck="false" autofocus>
             <div id="nameOkBtn" style="font-family:'Segoe UI',Arial,sans-serif;font-size:16px;font-weight:700;color:#1a1a2e;background:#ffeaa7;padding:12px 40px;border-radius:10px;cursor:pointer;letter-spacing:2px;text-transform:uppercase;opacity:0.4;transition:opacity 0.2s;">CONFIRM</div>
         </div>
     `;
-    const inp = document.getElementById('nameInput');
-    const btn = document.getElementById('nameOkBtn');
-    inp.focus();
 
-    const validate = () => {
-        const ok = inp.value.trim().length >= 1;
-        btn.style.opacity = ok ? '1' : '0.4';
-        btn.style.cursor = ok ? 'pointer' : 'default';
-    };
-    inp.addEventListener('input', validate);
-    inp.addEventListener('keydown', (e) => { if (e.key === 'Enter') submit(); });
-    btn.addEventListener('click', submit);
-
-    function submit() {
-        const name = inp.value.trim();
+    const submit = () => {
+        const inp = document.getElementById('nameInput');
+        const name = inp ? inp.value.trim() : '';
         if (!name) return;
         playerName = name;
         sessionStorage.setItem('mc_playerName', name);
         onDone();
-    }
+    };
+
+    setTimeout(() => {
+        const inp = document.getElementById('nameInput');
+        const btn = document.getElementById('nameOkBtn');
+
+        if (!inp || !btn) {
+            console.warn('Name prompt elements not found');
+            return;
+        }
+
+        inp.focus();
+
+        const validate = () => {
+            const ok = inp.value.trim().length >= 1;
+            btn.style.opacity = ok ? '1' : '0.4';
+            btn.style.cursor = ok ? 'pointer' : 'default';
+        };
+
+        validate(); // Initial validation
+        inp.addEventListener('input', validate);
+        inp.addEventListener('keydown', (e) => { if (e.key === 'Enter') submit(); });
+        btn.addEventListener('click', submit);
+    }, 0);
 }
 
 // ─── GUIDE / HOW TO PLAY ─────────────────────
